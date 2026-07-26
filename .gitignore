@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Generated outputs (not tracked in git)
+models/*
+reports/*
+uploads/*
+
+# Keep the directories themselves
+!models/.gitkeep
+!reports/.gitkeep
+!uploads/.gitkeep
+
+# Pytest / test cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
+
+# Scratch / temp files
+fix_deprecation.py
