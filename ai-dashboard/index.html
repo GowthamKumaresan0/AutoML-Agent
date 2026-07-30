@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NeuroViz — AI Research Command Center</title>
+  <meta name="description" content="An interactive AI Research Command Center showcasing AutoML, Blind-Assist VQA, and Medical VLM projects with live metrics." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- Neural Network Background Canvas -->
+<canvas id="neuralCanvas"></canvas>
+
+<!-- Cursor Glow -->
+<div class="cursor-glow" id="cursorGlow"></div>
+
+<!-- Top Navigation -->
+<nav class="navbar" id="navbar">
+  <div class="nav-brand">
+    <div class="brand-icon">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="3" fill="#7c3aed"/>
+        <circle cx="4" cy="4" r="2" fill="#06b6d4"/>
+        <circle cx="20" cy="4" r="2" fill="#06b6d4"/>
+        <circle cx="4" cy="20" r="2" fill="#06b6d4"/>
+        <circle cx="20" cy="20" r="2" fill="#06b6d4"/>
+        <line x1="6" y1="4" x2="10" y2="11" stroke="#7c3aed" stroke-width="1.5"/>
+        <line x1="18" y1="4" x2="14" y2="11" stroke="#7c3aed" stroke-width="1.5"/>
+        <line x1="6" y1="20" x2="10" y2="13" stroke="#7c3aed" stroke-width="1.5"/>
+        <line x1="18" y1="20" x2="14" y2="13" stroke="#7c3aed" stroke-width="1.5"/>
+      </svg>
+    </div>
+    <span class="brand-name">NeuroViz</span>
+    <span class="brand-tag">Research Lab</span>
+  </div>
+  <div class="nav-links">
+    <a href="#section-overview" class="nav-link active">Overview</a>
+    <a href="#section-projects" class="nav-link">Projects</a>
+    <a href="#section-metrics" class="nav-link">Metrics</a>
+    <a href="#section-visualizer" class="nav-link">Visualizer</a>
+  </div>
+  <div class="nav-status">
+    <span class="status-dot pulse"></span>
+    <span class="status-text">Training Active</span>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero" id="section-overview">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="badge-dot"></span>
+      AI Research Infrastructure v2.4
+    </div>
+    <h1 class="hero-title">
+      Your AI Research
+      <span class="gradient-text">Command Center</span>
+    </h1>
+    <p class="hero-subtitle">
+      Real-time monitoring, training insights, and model performance analytics
+      for your cutting-edge AI/ML research projects.
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" id="startSimulation">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><polygon points="5,3 19,12 5,21" fill="white"/></svg>
+        Run Simulation
+      </button>
+      <button class="btn-secondary">
+        <svg viewBox="0 0 24 24" fill="none" width="16" height="16"><path d="M12 2v20M2 12h20" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        New Experiment
+      </button>
+    </div>
+
+    <!-- Live Stats Row -->
+    <div class="hero-stats">
+      <div class="stat-pill">
+        <span class="stat-num" data-count="3">0</span>
+        <span class="stat-label">Active Models</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" data-count="94.7" data-decimal="1">0</span>
+        <span class="stat-label">Avg Accuracy %</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" data-count="1247">0</span>
+        <span class="stat-label">Total Epochs</span>
+      </div>
+      <div class="stat-pill">
+        <span class="stat-num" data-count="87" data-suffix="%">0</span>
+        <span class="stat-label">GPU Utilization</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="model-card-3d" id="modelCard3D">
+      <div class="model-card-inner">
+        <div class="model-rings">
+          <div class="ring ring-1"></div>
+          <div class="ring ring-2"></div>
+          <div class="ring ring-3"></div>
+        </div>
+        <div class="model-core">
+          <div class="core-icon">🧠</div>
+          <div class="core-label">AutoML</div>
+          <div class="core-sub">Pipeline Active</div>
+        </div>
+        <div class="floating-metrics">
+          <div class="fm-item fm-1">Loss: 0.043</div>
+          <div class="fm-item fm-2">Acc: 96.2%</div>
+          <div class="fm-item fm-3">LR: 1e-4</div>
+          <div class="fm-item fm-4">Ep: 89/100</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Real AutoML Results Section -->
+<section class="real-data-section" id="section-real-data">
+  <div class="section-header">
+    <h2 class="section-title">Real AutoML Results <span class="live-badge">LIVE DATA</span></h2>
+    <span class="section-subtitle" id="dataSource">Loading from reports/automl_report.md...</span>
+  </div>
+
+  <!-- Summary Banner -->
+  <div class="real-summary-banner" id="realSummaryBanner">
+    <div class="rsb-item">
+      <span class="rsb-label">Problem Type</span>
+      <span class="rsb-value" id="rProblemType">—</span>
+    </div>
+    <div class="rsb-item">
+      <span class="rsb-label">Target Column</span>
+      <span class="rsb-value" id="rTarget">—</span>
+    </div>
+    <div class="rsb-item">
+      <span class="rsb-label">Dataset Rows</span>
+      <span class="rsb-value" id="rRows">—</span>
+    </div>
+    <div class="rsb-item">
+      <span class="rsb-label">Features</span>
+      <span class="rsb-value" id="rFeatures">—</span>
+    </div>
+    <div class="rsb-item highlight">
+      <span class="rsb-label">Best Model</span>
+      <span class="rsb-value" id="rBestModel">—</span>
+    </div>
+    <div class="rsb-item">
+      <span class="rsb-label">Best Accuracy</span>
+      <span class="rsb-value" id="rAccuracy">—</span>
+    </div>
+  </div>
+
+  <div class="real-data-grid">
+    <!-- Model Leaderboard -->
+    <div class="glass-card leaderboard-card">
+      <div class="card-header">
+        <span class="card-icon">🏆</span>
+        <span class="card-title">Model Leaderboard</span>
+        <span class="card-badge success">Real Results</span>
+      </div>
+      <div class="leaderboard-list" id="leaderboardList">
+        <div class="lb-loading">Loading model results...</div>
+      </div>
+    </div>
+
+    <!-- Feature Importance Chart -->
+    <div class="glass-card fi-card">
+      <div class="card-header">
+        <span class="card-icon">🔍</span>
+        <span class="card-title">Feature Importance</span>
+        <span class="card-badge success">From Your Model</span>
+      </div>
+      <div class="fi-bars" id="fiBars">
+        <div class="lb-loading">Loading feature drivers...</div>
+      </div>
+    </div>
+
+    <!-- Confusion Matrix -->
+    <div class="glass-card cm-card">
+      <div class="card-header">
+        <span class="card-icon">📊</span>
+        <span class="card-title">Confusion Matrix</span>
+        <span class="card-badge success">Real Predictions</span>
+      </div>
+      <canvas id="cmCanvas" class="cm-canvas"></canvas>
+      <div class="cm-labels" id="cmLabels"></div>
+    </div>
+
+    <!-- Cleaning Log -->
+    <div class="glass-card cleaning-card">
+      <div class="card-header">
+        <span class="card-icon">🧹</span>
+        <span class="card-title">Data Cleaning Log</span>
+      </div>
+      <div class="cleaning-list" id="cleaningList">
+        <div class="lb-loading">Loading cleaning log...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="metrics-section" id="section-metrics">
+  <div class="section-header">
+    <h2 class="section-title">Live Training Metrics</h2>
+    <div class="section-controls">
+      <button class="ctrl-btn active" data-range="live">Live</button>
+      <button class="ctrl-btn" data-range="1h">1H</button>
+      <button class="ctrl-btn" data-range="24h">24H</button>
+    </div>
+  </div>
+  <div class="metrics-grid">
+    <div class="glass-card chart-card large">
+      <div class="card-header">
+        <div class="card-title-row">
+          <span class="card-icon">📉</span>
+          <span class="card-title">Training Loss</span>
+          <span class="card-badge success">&#x2193; 12.3%</span>
+        </div>
+        <span class="card-value" id="lossValue">0.043</span>
+      </div>
+      <canvas id="lossChart" class="chart-canvas"></canvas>
+    </div>
+    <div class="glass-card chart-card large">
+      <div class="card-header">
+        <div class="card-title-row">
+          <span class="card-icon">🎯</span>
+          <span class="card-title">Validation Accuracy</span>
+          <span class="card-badge success">&#x2191; 3.7%</span>
+        </div>
+        <span class="card-value" id="accValue">96.2%</span>
+      </div>
+      <canvas id="accChart" class="chart-canvas"></canvas>
+    </div>
+    <div class="glass-card gauge-card">
+      <div class="card-header">
+        <span class="card-icon">&#x26A1;</span>
+        <span class="card-title">GPU Usage</span>
+      </div>
+      <canvas id="gpuGauge" class="gauge-canvas"></canvas>
+      <div class="gauge-value" id="gpuValue">87%</div>
+      <div class="gauge-label">NVIDIA A100 · 40GB</div>
+    </div>
+    <div class="glass-card gauge-card">
+      <div class="card-header">
+        <span class="card-icon">💾</span>
+        <span class="card-title">VRAM Usage</span>
+      </div>
+      <canvas id="vramGauge" class="gauge-canvas"></canvas>
+      <div class="gauge-value" id="vramValue">34.2 GB</div>
+      <div class="gauge-label">of 40 GB allocated</div>
+    </div>
+  </div>
+</section>
+
+<!-- Projects Section -->
+<section class="projects-section" id="section-projects">
+  <div class="section-header">
+    <h2 class="section-title">Research Projects</h2>
+    <span class="section-subtitle">3 active experiments</span>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card" data-project="automl">
+      <div class="project-glow glow-purple"></div>
+      <div class="project-header">
+        <div class="project-emoji">🤖</div>
+        <div class="project-status-badge running">Running</div>
+      </div>
+      <h3 class="project-name">AutoML Agent</h3>
+      <p class="project-desc">Autonomous machine learning pipeline that auto-selects architectures, hyperparameters, and training strategies using reinforcement learning.</p>
+      <div class="project-metrics">
+        <div class="pm-item">
+          <span class="pm-label">Best Accuracy</span>
+          <span class="pm-value">96.2%</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">Models Tested</span>
+          <span class="pm-value">47</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">Epoch</span>
+          <span class="pm-value">89/100</span>
+        </div>
+      </div>
+      <div class="project-progress">
+        <div class="progress-header">
+          <span>Training Progress</span>
+          <span>89%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill purple-fill" style="width: 0%" data-width="89"></div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">PyTorch</span><span class="tag">RL</span><span class="tag">NAS</span>
+      </div>
+      <button class="project-btn">View Details →</button>
+    </div>
+
+    <div class="project-card" data-project="vqa">
+      <div class="project-glow glow-cyan"></div>
+      <div class="project-header">
+        <div class="project-emoji">👁️</div>
+        <div class="project-status-badge training">Training</div>
+      </div>
+      <h3 class="project-name">Blind-Assist VQA</h3>
+      <p class="project-desc">Visual Question Answering system designed to assist visually impaired users, combining vision transformers with NLP for scene understanding.</p>
+      <div class="project-metrics">
+        <div class="pm-item">
+          <span class="pm-label">VQA Score</span>
+          <span class="pm-value">73.4%</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">Dataset Size</span>
+          <span class="pm-value">114K</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">Epoch</span>
+          <span class="pm-value">34/50</span>
+        </div>
+      </div>
+      <div class="project-progress">
+        <div class="progress-header">
+          <span>Training Progress</span>
+          <span>68%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill cyan-fill" style="width: 0%" data-width="68"></div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">ViT</span><span class="tag">BERT</span><span class="tag">VQA</span>
+      </div>
+      <button class="project-btn">View Details →</button>
+    </div>
+
+    <div class="project-card" data-project="medical">
+      <div class="project-glow glow-pink"></div>
+      <div class="project-header">
+        <div class="project-emoji">🏥</div>
+        <div class="project-status-badge idle">Evaluating</div>
+      </div>
+      <h3 class="project-name">Medical VLM Agent</h3>
+      <p class="project-desc">Vision-Language Model for medical image analysis, capable of generating diagnostic reports from X-rays, MRIs, and CT scans with clinical-grade accuracy.</p>
+      <div class="project-metrics">
+        <div class="pm-item">
+          <span class="pm-label">BLEU Score</span>
+          <span class="pm-value">0.847</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">Parameters</span>
+          <span class="pm-value">7B</span>
+        </div>
+        <div class="pm-item">
+          <span class="pm-label">F1 Score</span>
+          <span class="pm-value">91.3%</span>
+        </div>
+      </div>
+      <div class="project-progress">
+        <div class="progress-header">
+          <span>Evaluation Progress</span>
+          <span>100%</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill pink-fill" style="width: 0%" data-width="100"></div>
+        </div>
+      </div>
+      <div class="project-tags">
+        <span class="tag">LLaVA</span><span class="tag">DICOM</span><span class="tag">NLP</span>
+      </div>
+      <button class="project-btn">View Details →</button>
+    </div>
+  </div>
+</section>
+
+<!-- Neural Network Visualizer Section -->
+<section class="visualizer-section" id="section-visualizer">
+  <div class="section-header">
+    <h2 class="section-title">Neural Architecture Visualizer</h2>
+    <div class="section-controls">
+      <select class="arch-select" id="archSelect">
+        <option value="automl">AutoML Agent</option>
+        <option value="vqa">Blind-Assist VQA</option>
+        <option value="medical">Medical VLM</option>
+      </select>
+    </div>
+  </div>
+  <div class="visualizer-container">
+    <canvas id="nnViz" class="nn-canvas"></canvas>
+    <div class="viz-legend">
+      <div class="legend-item"><div class="legend-dot input"></div><span>Input Layer</span></div>
+      <div class="legend-item"><div class="legend-dot hidden"></div><span>Hidden Layers</span></div>
+      <div class="legend-item"><div class="legend-dot attention"></div><span>Attention</span></div>
+      <div class="legend-item"><div class="legend-dot output"></div><span>Output Layer</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Activity Log -->
+<section class="activity-section">
+  <div class="section-header">
+    <h2 class="section-title">Live Activity Log</h2>
+    <button class="clear-btn" id="clearLog">Clear</button>
+  </div>
+  <div class="activity-log" id="activityLog">
+    <div class="log-entry info">
+      <span class="log-time">14:32:01</span>
+      <span class="log-badge info-badge">INFO</span>
+      <span class="log-msg">AutoML Agent — Epoch 89 complete. Loss: 0.043, Acc: 96.2%</span>
+    </div>
+    <div class="log-entry success">
+      <span class="log-time">14:31:47</span>
+      <span class="log-badge success-badge">SUCCESS</span>
+      <span class="log-msg">Medical VLM evaluation finished — BLEU: 0.847, F1: 91.3%</span>
+    </div>
+    <div class="log-entry warn">
+      <span class="log-time">14:31:22</span>
+      <span class="log-badge warn-badge">WARN</span>
+      <span class="log-msg">Blind-Assist VQA — Gradient norm spike detected at step 2,347</span>
+    </div>
+    <div class="log-entry info">
+      <span class="log-time">14:30:58</span>
+      <span class="log-badge info-badge">INFO</span>
+      <span class="log-msg">GPU memory optimization applied — 3.2 GB freed</span>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="footer-brand">
+    <span>&#x26A1; NeuroViz</span>
+    <span class="footer-sep">·</span>
+    <span>AI Research Command Center</span>
+  </div>
+  <div class="footer-info">Built with Canvas API · Zero Dependencies · Pure Web Tech</div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>

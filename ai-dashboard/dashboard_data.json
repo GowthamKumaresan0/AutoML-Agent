@@ -1,0 +1,155 @@
+{
+  "problem_type": "Classification (Binary Classification)",
+  "target": "approved",
+  "total_rows": 120,
+  "total_features": 4,
+  "best_model": "Gradient Boosting Classifier",
+  "best_metrics": {
+    "accuracy": 0.5,
+    "f1_score": 0.4667,
+    "precision": 0.4688,
+    "recall": 0.4714
+  },
+  "leaderboard": [
+    {
+      "model": "Gradient Boosting Classifier",
+      "metrics": {
+        "accuracy": 0.5,
+        "f1_score": 0.4667,
+        "precision": 0.4688,
+        "recall": 0.4714
+      },
+      "primary_score": 0.5
+    },
+    {
+      "model": "Logistic Regression",
+      "metrics": {
+        "accuracy": 0.5,
+        "f1_score": 0.395,
+        "precision": 0.4,
+        "recall": 0.4429
+      },
+      "primary_score": 0.5
+    },
+    {
+      "model": "Random Forest Classifier",
+      "metrics": {
+        "accuracy": 0.4167,
+        "f1_score": 0.3438,
+        "precision": 0.3333,
+        "recall": 0.3714
+      },
+      "primary_score": 0.4167
+    },
+    {
+      "model": "Decision Tree Classifier",
+      "metrics": {
+        "accuracy": 0.4167,
+        "f1_score": 0.4,
+        "precision": 0.4,
+        "recall": 0.4
+      },
+      "primary_score": 0.4167
+    }
+  ],
+  "feature_drivers": [
+    {
+      "rank": 1,
+      "feature": "credit_score",
+      "importance": 40.1
+    },
+    {
+      "rank": 2,
+      "feature": "income",
+      "importance": 28.0
+    },
+    {
+      "rank": 3,
+      "feature": "age",
+      "importance": 22.3
+    },
+    {
+      "rank": 4,
+      "feature": "debt_ratio",
+      "importance": 9.6
+    }
+  ],
+  "cleaning_log": [
+    "Imputed 12 missing values in numeric feature 'income' with median=77289.5000.",
+    "Imputed 8 missing values in numeric feature 'debt_ratio' with median=0.4900."
+  ],
+  "confusion_matrix": [
+    [
+      3,
+      7
+    ],
+    [
+      5,
+      9
+    ]
+  ],
+  "class_labels": [
+    "No",
+    "Yes"
+  ],
+  "feature_columns": [
+    "age",
+    "income",
+    "credit_score",
+    "debt_ratio"
+  ],
+  "test_predictions": [
+    "No",
+    "No",
+    "Yes",
+    "No",
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "Yes",
+    "No",
+    "No",
+    "No",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "Yes"
+  ],
+  "test_actuals": [
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "No",
+    "Yes",
+    "No",
+    "Yes",
+    "No",
+    "Yes",
+    "Yes",
+    "No",
+    "No",
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "No",
+    "Yes",
+    "Yes",
+    "Yes",
+    "No",
+    "No",
+    "Yes"
+  ],
+  "generated_at": "2026-07-30T14:45:22.306312",
+  "source": "E:\\AutoML-Agent\\reports\\automl_report.md"
+}
